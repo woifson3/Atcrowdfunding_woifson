@@ -50,7 +50,7 @@ public class TAdminServiceImpl implements TAdminService {
 
         TAdminExample example=null;
         //要是有筛选条件
-        if(StringUtils.isEmpty(condition)){
+        if(!StringUtils.isEmpty(condition)){
             example=new TAdminExample();
             example.createCriteria().andLoginacctLike("%"+condition+"%");
             TAdminExample.Criteria criteria = example.createCriteria().andUserpswdEqualTo("%" +condition+ "%");
@@ -64,6 +64,14 @@ public class TAdminServiceImpl implements TAdminService {
 		return admins;
 	}
 
+    /**
+     * 根据ID删除admin
+     * @param id
+     */
+    @Override
+    public void deleteAdminById(Integer id) {
+        adminMapper.deleteByPrimaryKey(id);
+    }
 
 
 }

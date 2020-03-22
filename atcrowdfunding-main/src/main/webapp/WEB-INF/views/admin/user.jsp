@@ -47,14 +47,16 @@
                     <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-inline" role="form" style="float:left;">
+                    <form class="form-inline" action="${PATH}/static/admin/index.html" method="post" role="form"
+                          style="float:left;">
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
-                                <input class="form-control has-success" type="text" placeholder="请输入查询条件">
+                                <input class="form-control has-success" name="condition" type="text"
+                                       placeholder="请输入查询条件">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
+                        <button type="submit" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
@@ -98,8 +100,9 @@
                                                         class=" glyphicon glyphicon-check"></i></button>
                                                 <button type="button" class="btn btn-primary btn-xs"><i
                                                         class=" glyphicon glyphicon-pencil"></i></button>
-                                                <button type="button" class="btn btn-danger btn-xs"><i
-                                                        class=" glyphicon glyphicon-remove"></i></button>
+                                                <button adminid="${admin.id}" type="button" class="btn btn-danger btn-xs deleteAdminBtn"><i
+                                                        class=" glyphicon glyphicon-remove" ></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -113,23 +116,28 @@
                                         <c:choose>
                                             <c:when test="${pageInfo.hasPreviousPage }">
                                                 <!-- 有上一页 : 点击时跳转到当前页码的上一页-->
-                                                <li><a href="${PATH }/admin/index.html?pageNum=${PageInfo.pageNum-1 }&condition=${param.condition}">上一页</a></li>
+                                                <li>
+                                                    <a href="${PATH }//static/admin/index.html?pageNum=${PageInfo.pageNum-1 }&condition=${param.condition}">上一页</a>
+                                                </li>
                                             </c:when>
                                             <c:otherwise>
                                                 <!-- 没有上一页 -->
-                                                <li class="disabled"><a  href="javascript:void(0);">上一页</a></li>
+                                                <li class="disabled"><a href="javascript:void(0);">上一页</a></li>
                                             </c:otherwise>
                                         </c:choose>
 
                                         <!-- 中间页码 -->
-                                        <c:forEach items="${pageInfo.navigatepageNums }" var="index">
+                                        <c:forEach items="${PageInfo.navigatepageNums }" var="index">
                                             <c:choose>
                                                 <c:when test="${index==PageInfo.pageNum }">
                                                     <!-- 当前页码 -->
-                                                    <li class="active"><a href="Javascript:void(0);">${index } <span class="sr-only">(current)</span></a></li>
+                                                    <li class="active"><a href="Javascript:void(0);">${index}<span
+                                                            class="sr-only">(current)</span></a></li>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <li><a href="${PATH }/admin/index.html?pageNum=${index }&condition=${param.condition}">${index }</a></li>
+                                                    <li>
+                                                        <a href="${PATH}/static/admin/index.html?pageNum=${index}&condition=${param.condition}">${index}</a>
+                                                    </li>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:forEach>
@@ -141,11 +149,13 @@
                                         <c:choose>
                                             <c:when test="${PageInfo.hasNextPage }">
                                                 <!-- 有下一页 : 点击时跳转到当前页码的下一页-->
-                                                <li><a href="${PATH }/admin/index.html?pageNum=${PageInfo.pageNum+1 }&condition=${param.condition}">下一页</a></li>
+                                                <li>
+                                                    <a href="${PATH }//static/admin/index.html?pageNum=${PageInfo.pageNum+1 }&condition=${param.condition}">下一页</a>
+                                                </li>
                                             </c:when>
                                             <c:otherwise>
                                                 <!-- 没有下一页 -->
-                                                <li class="disabled"><a  href="javascript:void(0);">下一页</a></li>
+                                                <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
                                             </c:otherwise>
                                         </c:choose>
                                     </ul>
@@ -161,26 +171,40 @@
     </div>
 </div>
 
-<%@ include file="/WEB-INF/include/base_js.jsp" %>
-<script type="text/javascript">
-    $(function () {
-        $(".list-group-item").click(function () {
-            if ($(this).find("ul")) {
-                $(this).toggleClass("tree-closed");
-                if ($(this).hasClass("tree-closed")) {
-                    $("ul", this).hide("fast");
-                } else {
-                    $("ul", this).show("fast");
-                }
-            }
-        });
-    });
-    $("tbody .btn-success").click(function () {
-        window.location.href = "assignRole.html";
-    });
-    $("tbody .btn-primary").click(function () {
-        window.location.href = "edit.html";
-    });
-</script>
+    <%@ include file="/WEB-INF/include/base_js.jsp" %>
+        <script type="text/javascript">
+            $(function () {
+                $(".list-group-item").click(function () {
+                    if ($(this).find("ul")) {
+                        $(this).toggleClass("tree-closed");
+                        if ($(this).hasClass("tree-closed")) {
+                            $("ul", this).hide("fast");
+                        } else {
+                            $("ul", this).show("fast");
+                        }
+                    }
+                });
+            });
+            $("tbody .btn-success").click(function () {
+                window.location.href = "assignRole.html";
+            });
+            $("tbody .btn-primary").click(function () {
+                window.location.href = "edit.html";
+            });
+
+            //删除管理员
+            $(".deleteAdminBtn").click(function(){
+                //获取要删除的管理员的ID
+                var adminid=$(this).attr("adminid")
+                console.log(adminid)
+                //上传相应上的id，发送请求到服务器完成删除操作
+                //加上一个提示弹窗
+                layer.confirm("你确定要删除："+ $(this).parents("tr").children("td:eq(3)").text() +"吗？",
+                    {title:"删除提示",icon:3},function(a){
+                        layer.close(a);
+                        window.location="${PATH}/admin/deleteAdmin?id="+adminid;
+                    });
+            });
+        </script>
 </body>
 </html>
