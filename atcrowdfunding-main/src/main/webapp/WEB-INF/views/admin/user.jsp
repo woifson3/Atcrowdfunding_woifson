@@ -59,11 +59,11 @@
                         <button type="submit" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
+                    <button id="deleteAdmins" type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
                             class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
                     <button type="button" class="btn btn-primary" style="float:right;"
-                            onclick="window.location.href='add.html'"><i class="glyphicon glyphicon-plus"></i> 新增
+                            onclick="window.location='${PATH}/admin/add.html'"><i class="glyphicon glyphicon-plus"></i> 新增
                     </button>
                     <br>
                     <hr style="clear:both;">
@@ -91,17 +91,14 @@
                                     <c:forEach items="${PageInfo.list}" var="admin" varStatus="vs">
                                         <tr>
                                             <td>${vs.count}</td>
-                                            <td><input type="checkbox"></td>
+                                            <td><input id="${admin.id}" type="checkbox"></td>
                                             <td>${admin.loginacct}</td>
                                             <td>${admin.username}</td>
                                             <td>${admin.email}</td>
                                             <td>
-                                                <button type="button" class="btn btn-success btn-xs"><i
-                                                        class=" glyphicon glyphicon-check"></i></button>
-                                                <button type="button" class="btn btn-primary btn-xs"><i
-                                                        class=" glyphicon glyphicon-pencil"></i></button>
-                                                <button adminid="${admin.id}" type="button" class="btn btn-danger btn-xs deleteAdminBtn"><i
-                                                        class=" glyphicon glyphicon-remove" ></i>
+                                                <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
+                                                <button adminId="${admin.id}" type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
+                                                <button adminid="${admin.id}" type="button" class="btn btn-danger btn-xs deleteAdminBtn"><i class=" glyphicon glyphicon-remove" ></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -188,8 +185,11 @@
             $("tbody .btn-success").click(function () {
                 window.location.href = "assignRole.html";
             });
+
             $("tbody .btn-primary").click(function () {
-                window.location.href = "edit.html";
+                <!--100行的adminId-->
+              var adminIds= $(this).attr("adminId");
+                window.location.href = "${PATH}/admin/edit.html?myId="+adminIds;
             });
 
             //删除管理员
@@ -205,6 +205,34 @@
                         window.location="${PATH}/admin/deleteAdmin?id="+adminid;
                     });
             });
+
+            //全选和全不选
+            $("table thead :checkbox").click(function(){
+                    var flag=this.checked;
+                $("table tbody :checkbox").prop("checked",flag)
+            });
+            $("table tbody :checkbox").click(function(){
+                var totalCount=$("table tbody :checkbox").length;
+                var checkedCount=$("table tbody :checkbox:checked").length;
+                $("table thead :checkbox").prop("checked",totalCount==checkedCount);
+            });
+
+
+            //批量删除,拿到复选框中被选中的id删除
+            $("#deleteAdmins").click(function () {
+                alter("gsq");
+                console.log("gsq");
+                var $checkedBth=$("table tbody :checkbox:checked");
+                var ar=new Array();
+                $.each($checkedBth ,function () {
+                    ar.push(this.id);//因为这个id是原生的，不用转成$("this").attr("id")去拿id值
+                });
+                var idstr=ar.join(",");//以,分割
+
+                window.location="${PATH}/admin/deleteAdmins?ids="+idstr;
+            });
+
         </script>
+<script type="text/javascript" src="${PATH}/static/include/admin_js.js"></script>
 </body>
 </html>
