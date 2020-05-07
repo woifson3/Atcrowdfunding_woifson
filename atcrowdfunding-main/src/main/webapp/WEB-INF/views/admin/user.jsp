@@ -96,7 +96,7 @@
                                             <td>${admin.username}</td>
                                             <td>${admin.email}</td>
                                             <td>
-                                                <button type="button" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
+                                                <button type="button" adminId="${admin.id}" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>
                                                 <button adminId="${admin.id}" type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
                                                 <button adminid="${admin.id}" type="button" class="btn btn-danger btn-xs deleteAdminBtn"><i class=" glyphicon glyphicon-remove" ></i>
                                                 </button>
@@ -183,7 +183,8 @@
                 });
             });
             $("tbody .btn-success").click(function () {
-                window.location.href = "assignRole.html";
+                var roleId= $(this).attr("adminId");
+                window.location.href = "${PATH}/admin/toAssignRolePage?roleId="+roleId;
             });
 
             $("tbody .btn-primary").click(function () {

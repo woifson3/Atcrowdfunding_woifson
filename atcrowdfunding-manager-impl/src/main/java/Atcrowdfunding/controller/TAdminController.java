@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import Atcrowdfunding.bean.TMenu;
+import Atcrowdfunding.bean.TRole;
 import Atcrowdfunding.consts.AppConsts;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -33,6 +34,8 @@ public class TAdminController {
     TAdminService adminService;
     @Autowired
     TMenuService menuService;
+    @Autowired
+    TRoleService roleService;
 
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -201,38 +204,72 @@ public class TAdminController {
         //对数据进行修改
         adminService.updateAdminById(admin);
         //跳转到最开始的用户维护页面
-        String ref=(String)session.getAttribute("ref");
+        String ref = (String) session.getAttribute("ref");
         //session中的ref没有用了，就清除掉
         session.removeAttribute(ref);
         //跳转到toEditPage方法的前一个页面
-        return "redirect:"+ ref;
+        return "redirect:" + ref;
     }
 
     /**
      * 批量删除管理员
+     *
      * @param is
      * @param ref
      * @return
      */
-    @RequestMapping("/ admin/deleteAdmins")
-    public String deleteAdmins(@RequestParam("ids") String is,@RequestHeader("referer") String ref){
-       // try {
-            String[] ids = is.split(",");
-            ArrayList<Integer> inte = new ArrayList<>();
-            if(null !=ids){
+    @RequestMapping("/admin/deleteAdmins")
+    public String deleteAdmins(@RequestParam("ids") String is, @RequestHeader("referer") String ref) {
+        // try {
+        String[] ids = is.split(",");
+        ArrayList<Integer> inte = new ArrayList<>();
+        if (null != ids) {
                /* Stream<String> id = Arrays.stream(ids);
                 int num = Integer.parseInt(id.toString());
                 inte.add(num);*/
-               for(String id:ids){
-                   int num = Integer.parseInt(id);
-                   inte.add(num);
-               }
+            for (String id : ids) {
+                int num = Integer.parseInt(id);
+                inte.add(num);
             }
-            adminService.deleteAdmin(inte);
-       // } catch (NumberFormatException e) {
-         //   logger.info("批量删除出现错误"+e.getMessage());
-       // }
-        return "redirect:"+ref;
+        }
+        adminService.deleteAdmin(inte);
+        // } catch (NumberFormatException e) {
+        //   logger.info("批量删除出现错误"+e.getMessage());
+        // }
+        return "redirect:" + ref;
     }
+
+
+    /**
+     * 跳转到给管理员用户分配角色页面
+     *
+     * @param roleId
+     * @param model
+     * @return
+     */
+    @RequestMapping("admin/toAssignRolePage")
+    public String toAssignRolePage(Integer roleId, Model model) {
+        //1.获取出该用户所有的角色集合
+        List<TRole> tRoles = roleService.listRole(null);
+        //2.获该用户已经有的角色
+        List<Integer> roleIds=adminService.listAdminRoleIds(roleId);
+        //3.将角色分为以分配和未分配的集合
+        List<TRole> haveRole = new ArrayList<>();
+        List<TRole> unHaveRole = new ArrayList<>();
+        for(TRole role :tRoles){
+            //要是已拥有偶的角色中有所有角色里面有的ID，就代表是拥有该角色了
+            if(roleIds.contains(role.getId())){
+                haveRole.add(role);
+            }else {
+                unHaveRole.add(role);
+            }
+        }
+        //将角色集合放到域中
+        model.addAttribute("haveRole",haveRole);
+        model.addAttribute("unHaveRole",unHaveRole);
+        //跳转到页面中去
+       return "admin/assignRole";
+    }
+
 
 }
