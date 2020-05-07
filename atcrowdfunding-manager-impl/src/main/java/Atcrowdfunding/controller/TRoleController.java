@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * 角色维护功能
  */
+
 @Controller
 public class TRoleController {
 
@@ -40,7 +41,7 @@ public class TRoleController {
     @ResponseBody
     @RequestMapping("role/rolesList")
     public List<TRole> roleList(){
-        List<TRole> roles=tRoleService.listRole();
+        List<TRole> roles=tRoleService.listRole(null);
 
         return roles;
     }

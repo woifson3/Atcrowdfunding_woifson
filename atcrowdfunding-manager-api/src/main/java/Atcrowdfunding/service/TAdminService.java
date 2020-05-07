@@ -24,4 +24,7 @@ public interface TAdminService {
     void deleteAdmin(ArrayList<Integer> inte);
 
     List<Integer> listAdminRoleIds(Integer roleId);
+
+    void bangDingAdminAndRole(Integer admiId, List<Integer> roleId);
+
 }

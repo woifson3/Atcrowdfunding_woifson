@@ -241,7 +241,7 @@ public class TAdminController {
 
 
     /**
-     * 跳转到给管理员用户分配角色页面
+     * 跳转到给管理员用户分配角色页面 day10.s.6-10
      *
      * @param roleId
      * @param model
@@ -272,4 +272,30 @@ public class TAdminController {
     }
 
 
+    /**
+     * 角色分配功能 day10.s.11-12
+     * @param admiId
+     * @param roleIds
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("admin/fenPeiRole")
+    public String fenPeiRole(Integer admiId,@RequestParam("roleId")List<Integer> roleId){
+        //用service将adminId和roleId绑定到T_admin_Role中
+        adminService.bangDingAdminAndRole(admiId,roleId);
+
+        return "ok";
+    }
+
+    /**
+     * 删除管理员的角色  day10.s.13
+     * @param admiId
+     * @param roleIds
+     * @return
+     */
+    @RequestMapping("admin/DeleteRole")
+    public String DeleteRole(Integer admiId,@RequestParam("roleIds")List<Integer> roleIds){
+
+        return "ok";
+    }
 }

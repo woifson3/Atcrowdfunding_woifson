@@ -3,6 +3,7 @@ package Atcrowdfunding.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import Atcrowdfunding.mapper.TAdminRoleMapper;
 import Atcrowdfunding.utils.AppDateUtils;
 import Atcrowdfunding.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class TAdminServiceImpl implements TAdminService {
 
     @Autowired
     TAdminMapper adminMapper;
-
+    @Autowired
+    TAdminRoleMapper adminRoleMapper;
     /**
      * 判断loginacct和userpswd是否存在，用户能否登陆的
      *
@@ -134,6 +136,27 @@ public class TAdminServiceImpl implements TAdminService {
         example.createCriteria().andIdIn(inte);
         adminMapper.deleteByExample(example);
 
+    }
+
+    /**
+     * toAssignRolePage  根据用户ID查询出对应的拥有的角色
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<Integer> listAdminRoleIds(Integer roleId) {
+       List<Integer> ids= adminRoleMapper.selectAIdByroleIds(roleId);
+        return ids;
+    }
+
+    /**
+     * 角色分配功能 day10.s.11-12
+     * @param admiId
+     * @param roleId
+     */
+    @Override
+    public void bangDingAdminAndRole(Integer admiId, List<Integer> roleId) {
+        adminRoleMapper.insertAdminAndRole(admiId,roleId);
     }
 
 

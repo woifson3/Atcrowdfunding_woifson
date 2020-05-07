@@ -30,4 +30,6 @@ public interface TAdminRoleMapper {
     int updateByPrimaryKey(TAdminRole record);
 
     List<Integer> selectAIdByroleIds(@Param("iiiddds")Integer roleId);
+
+    void insertAdminAndRole(@Param("admiId") Integer admiId,@Param("roleIds") List<Integer> roleIds);
 }

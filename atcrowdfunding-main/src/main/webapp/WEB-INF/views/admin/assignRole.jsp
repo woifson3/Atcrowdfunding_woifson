@@ -20,7 +20,7 @@
     <style>
         .tree li {
             list-style-type: none;
-            cursor:pointer;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -32,31 +32,7 @@
         <div class="navbar-header">
             <div><a class="navbar-brand" style="font-size:32px;" href="user.html">众筹平台 - 用户维护</a></div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li style="padding-top:8px;">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-user"></i> 张三 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-comment"></i> 消息</a></li>
-                            <li class="divider"></li>
-                            <li><a href="login.html"><i class="glyphicon glyphicon-off"></i> 退出系统</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li style="margin-left:10px;padding-top:8px;">
-                    <button type="button" class="btn btn-default btn-danger">
-                        <span class="glyphicon glyphicon-question-sign"></span> 帮助
-                    </button>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </div>
+
     </div>
 </nav>
 
@@ -65,11 +41,12 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <div class="tree">
                 <ul style="padding-left:0px;" class="list-group">
-                    <li class="list-group-item tree-closed" >
+                    <li class="list-group-item tree-closed">
                         <a href="main.html"><i class="glyphicon glyphicon-dashboard"></i> 控制面板</a>
                     </li>
                     <li class="list-group-item">
-                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 权限管理 <span class="badge" style="float:right">3</span></span>
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 权限管理 <span class="badge"
+                                                                                             style="float:right">3</span></span>
                         <ul style="margin-top:10px;">
                             <li style="height:30px;">
                                 <a href="user.html" style="color:red;"><i class="glyphicon glyphicon-user"></i> 用户维护</a>
@@ -86,7 +63,8 @@
                         </ul>
                     </li>
                     <li class="list-group-item tree-closed">
-                        <span><i class="glyphicon glyphicon-ok"></i> 业务审核 <span class="badge" style="float:right">3</span></span>
+                        <span><i class="glyphicon glyphicon-ok"></i> 业务审核 <span class="badge"
+                                                                                style="float:right">3</span></span>
                         <ul style="margin-top:10px;display:none;">
                             <li style="height:30px;">
                                 <a href="auth_cert.html"><i class="glyphicon glyphicon-check"></i> 实名认证审核</a>
@@ -125,7 +103,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="list-group-item tree-closed" >
+                    <li class="list-group-item tree-closed">
                         <a href="param.html"><i class="glyphicon glyphicon-list-alt"></i> 参数管理</a>
                     </li>
                 </ul>
@@ -142,24 +120,27 @@
                     <form role="form" class="form-inline">
                         <div class="form-group">
                             <label for="exampleInputPassword1">未分配角色列表</label><br>
-                            <select class="form-control" multiple size="10" style="width:400px;overflow-y:auto;">
-                                <c:forEach items="${requestScope.unHaveRole}" var="xxx">
-                                    <option value="${xxx.id}">${xxx.name}</option>
+                            <select id="unHaveRoleBtn" class="form-control" multiple size="10"
+                                    style="width:400px;overflow-y:auto;">
+                                <c:forEach items="${requestScope.unHaveRole}" var="role">
+                                    <option value="${role.id}">${role.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
                             <ul>
-                                <li class="btn btn-default glyphicon glyphicon-chevron-right"></li>
+                                <li id="checkedRoleBtn" class="btn btn-default glyphicon glyphicon-chevron-right"></li>
                                 <br>
-                                <li class="btn btn-default glyphicon glyphicon-chevron-left" style="margin-top:20px;"></li>
+                                <li id="uncheckeckedRoleBtn" class="btn btn-default glyphicon glyphicon-chevron-left"
+                                    style="margin-top:20px;"></li>
                             </ul>
                         </div>
                         <div class="form-group" style="margin-left:40px;">
                             <label for="exampleInputPassword1">已分配角色列表</label><br>
-                            <select class="form-control" multiple size="10" style="width:400px;overflow-y:auto;">
-                                <c:forEach items="${requestScope.haveRole}" var="xxx">
-                                    <option value="${xxx.id}">${xxx.name}</option>
+                            <select id="havaRoleBtn" class="form-control" multiple size="10"
+                                    style="width:400px;overflow-y:auto;">
+                                <c:forEach items="${requestScope.haveRole}" var="role">
+                                    <option value="${role.id}">${role.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -173,7 +154,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">帮助</h4>
             </div>
             <div class="modal-body">
@@ -203,13 +185,35 @@
 <script src="script/docs.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $(".list-group-item").click(function(){
-            if ( $(this).find("ul") ) {
+        $(".list-group-item").click(function () {
+            if ($(this).find("ul")) {
                 $(this).toggleClass("tree-closed");
-                if ( $(this).hasClass("tree-closed") ) {
+                if ($(this).hasClass("tree-closed")) {
                     $("ul", this).hide("fast");
                 } else {
                     $("ul", this).show("fast");
+                }
+            }
+        });
+    });
+    <!--向右滑动-->
+    $("#checkedRoleBtn").click(function () {
+        var idsStr = "";
+        $("#unHaveRoleBtn option:selected").each(function () {
+            idsStr += "roleId=" + this.value + "&";           
+        });
+        <!--这个roleId是分配角色列表页面url？后面的-->
+        var adminId = "${param.roleId}";
+        idsStr += "adminId=" + adminId;
+        //异步提交请求给服务器保存数据
+        $.ajax({
+            type: "post",
+            url: "${PATH}/admin/fenPeiRole",
+            data: idsStr,
+            success: function (result) {
+                if ("ok" == result) {
+                    //如果成功，将未分配的选中的角色列表移动到已分配列表中
+                    $("#unHaveRoleBtn option:selected").appendTo("#havaRoleBtn");
                 }
             }
         });
