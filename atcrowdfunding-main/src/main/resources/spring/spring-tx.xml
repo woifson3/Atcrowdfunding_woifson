@@ -23,5 +23,9 @@
 	<!-- 事务注解驱动 -->
 	<tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
 	
-	
+	<!-- jdbcTemplate -->
+	<bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>

@@ -7,8 +7,9 @@ import Atcrowdfunding.mapper.TAdminRoleMapper;
 import Atcrowdfunding.utils.AppDateUtils;
 import Atcrowdfunding.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.CollectionUtils;
+import org.springframework.stereotype.Service;
 
 import Atcrowdfunding.bean.TAdmin;
 import Atcrowdfunding.bean.TAdminExample;
@@ -23,6 +24,8 @@ public class TAdminServiceImpl implements TAdminService {
     TAdminMapper adminMapper;
     @Autowired
     TAdminRoleMapper adminRoleMapper;
+  /*  @Autowired
+    PasswordEncoder passwordEncoder;*/
     /**
      * 判断loginacct和userpswd是否存在，用户能否登陆的
      *
@@ -33,10 +36,10 @@ public class TAdminServiceImpl implements TAdminService {
     @Override
     public TAdmin doLogin(String loginacct, String userpswd) {
         //判断loginacct和usrpswd是否在存在
-        String userPswd = MD5Util.digest(userpswd);
+
         //creatCriteria是mybatis逆向工程中的条件组装方法，此处是判断登陆名和密码是否符合，然后把条件放到，mapper查询语句中
         TAdminExample example = new TAdminExample();
-        example.createCriteria().andLoginacctEqualTo(loginacct).andUserpswdEqualTo(userPswd);
+        example.createCriteria().andLoginacctEqualTo(loginacct).andUserpswdEqualTo(userpswd);
         List<TAdmin> admins = adminMapper.selectByExample(example);
 
         if (CollectionUtils.isEmpty(admins) || admins.size() != 1) {

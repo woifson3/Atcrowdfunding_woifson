@@ -10,4 +10,7 @@
 	<context:component-scan base-package="Atcrowdfunding">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
+
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
 </beans>

@@ -66,6 +66,16 @@
   <sql id="Base_Column_List">
     id, name
   </sql>
+
+   <!-- 	List<TRole> selectRolesByAdminId(Integer id); -->
+  <select id="selectRolesByAdminId" resultType="Atcrowdfunding.bean.TRole">
+  	SELECT t_role.id, t_role.`name`
+  	FROM t_admin_role
+  	JOIN t_role
+  	ON roleid = t_role.`id`
+  	WHERE adminid = #{id}
+  </select>
+
   <select id="selectByExample" parameterType="Atcrowdfunding.bean.TRoleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

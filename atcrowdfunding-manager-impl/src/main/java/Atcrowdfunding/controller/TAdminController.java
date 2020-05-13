@@ -1,6 +1,5 @@
 package Atcrowdfunding.controller;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,11 +8,10 @@ import Atcrowdfunding.bean.TRole;
 import Atcrowdfunding.consts.AppConsts;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import jdk.internal.org.objectweb.asm.commons.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +20,7 @@ import Atcrowdfunding.bean.TAdmin;
 import Atcrowdfunding.service.TAdminService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 @Controller
@@ -49,7 +45,7 @@ public class TAdminController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "/doLogin")
+ /*   @RequestMapping(value = "/doLogin")
     public String doLogin(String loginacct, String userpswd
             , HttpServletRequest request, HttpSession session) {
 
@@ -68,7 +64,7 @@ public class TAdminController {
 
         //3.业务处理的结果返回给前端
         return "redirect:/main.html";
-    }
+    }*/
 
     /**
      * 用户的注销
@@ -130,6 +126,7 @@ public class TAdminController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAnyRole('PM - 项目经理' ,'CMO / CMS - 配置管理员')")    //细粒度控制，控制登录进来的用户要是有权限才能操作该功能
     @RequestMapping("/admin/deleteAdmin")
     public String deleteAdmin(Integer id, @RequestHeader("referer") String referer) {
         adminService.deleteAdminById(id);
@@ -275,7 +272,7 @@ public class TAdminController {
     /**
      * 角色分配功能 day10.s.11-12
      * @param admiId
-     * @param roleIds
+     * @param
      * @return
      */
     @ResponseBody

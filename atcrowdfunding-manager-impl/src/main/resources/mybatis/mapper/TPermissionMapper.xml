@@ -72,6 +72,16 @@
     id, name, title, icon, pid
   </sql>
 
+    <!-- List<String> selectPermissionNamesByRoleId(Integer id); -->
+  <select id="selectPermissionNamesByRoleId" resultType="java.lang.String">
+  	SELECT name
+  	FROM t_role_permission
+  	JOIN t_permission
+  	ON permissionid = t_permission.`id`
+	WHERE roleid = #{roleid}
+	AND name IS NOT NULL
+  </select>
+
     <!--List<Integer> selectHaveByIds(Integer id);-->
     <select id="selectHaveByIds" resultType="java.lang.Integer">
     SELECT permissionid
